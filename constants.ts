@@ -1,5 +1,5 @@
-import { Zap, Shield, RefreshCw, Heart, Users, Command, MessageSquare, Activity, Globe, Cpu } from 'lucide-react';
-import { PricingPlan, ComparisonRow, Advantage, Testimonial, Statistic, FaqItem } from './types';
+import { Bot, Zap, Shield, BarChart3, Globe, Command, FileJson, Users, Cpu, MessageSquare, Clock, Lock, RefreshCw, Smartphone, Heart, Activity } from 'lucide-react';
+import { PricingPlan, Feature, FaqItem, ComparisonRow, Advantage, Testimonial, Statistic } from './types';
 
 export const CONTACT_INFO = {
   ownerPhone: '6288289338073',
@@ -7,89 +7,135 @@ export const CONTACT_INFO = {
   groupLink: 'https://chat.whatsapp.com/H19gbX0a8mvAdNcTLiCJ1h',
   channelLink: 'https://whatsapp.com/channel/0029VbCFHn19xVJfEvznNn05',
   youtubeLink: 'https://youtube.com/@kenhinnaste?si=zK4-102GhMwpurhl',
+  pakasirUrl: 'https://app.pakasir.com/projects/d3iqz7ziq',
+  pakasirSlug: 'kenshin',
+  pakasirApiKey: 'McZCzyanCWkZmC969hNQA0u6YtuWLDtz'
 };
 
-export const STANDARD_PLANS: PricingPlan[] = [
-  { id: 'std-w', name: 'Standard Weekly', price: 'Rp 10.000', duration: '7 Days', features: ['Group Access', 'Anti-Link Basic', '99.5% Uptime'], type: 'standard', priceValue: 10000 },
-  { id: 'std-m', name: 'Standard Monthly', price: 'Rp 30.000', duration: '30 Days', features: ['Custom Welcome', 'Standard Speed', 'Regular Support'], type: 'standard', priceValue: 30000 },
-  { id: 'std-y', name: 'Standard Yearly', price: 'Rp 80.000', duration: '1 Year', features: ['Full Config', 'Priority Node', 'Best Value'], type: 'standard', priceValue: 80000 },
+export const FEATURES: Feature[] = [
+  { icon: MessageSquare, title: 'Smart Auto Reply', description: 'Respon otomatis berbasis AI yang natural dan kontekstual.' },
+  { icon: Users, title: 'Group Management', description: 'Moderasi otomatis: welcome message, antispam, dan user verification.' },
+  { icon: Shield, title: 'Security System', description: 'Proteksi real-time dari link berbahaya (anti-link) dan bot spammer.' },
+  { icon: BarChart3, title: 'Live Analytics', description: 'Pantau statistik aktivitas grup dan penggunaan bot secara visual.' },
+  { icon: Zap, title: 'Ultra Fast Response', description: 'Infrastruktur server cloud dengan latensi di bawah 100ms.' },
+  { icon: Command, title: 'Custom Commands', description: 'Buat trigger dan respon kustom tanpa coding.' },
+  { icon: FileJson, title: 'Media Tools', description: 'Download story, konversi stiker, dan manipulasi gambar instan.' },
+  { icon: Globe, title: 'Cross Platform', description: 'Sinkronisasi penuh di Web, Android, dan iOS.' },
 ];
 
-export const ADVANCED_PLANS: PricingPlan[] = [
-  { id: 'adv-w', name: 'Premium Weekly', price: 'Rp 20.000', duration: '7 Days', features: ['Advanced AI Core', 'No Command Cooldown', 'Media Downloader Pro'], type: 'premium', priceValue: 20000 },
-  { id: 'adv-m', name: 'Premium Monthly', price: 'Rp 40.000', duration: '30 Days', features: ['Neural Chat GPT-4', 'Custom Bot Profile', 'Audio Transcription'], isPopular: true, type: 'premium', priceValue: 40000 },
-  { id: 'adv-y', name: 'Premium Yearly', price: 'Rp 90.000', duration: '1 Year', features: ['Unlimited Requests', 'Beta Module Access', 'Private Node 01'], type: 'premium', priceValue: 90000 },
+export const PRICING_PLANS: PricingPlan[] = [
+  {
+    id: 'weekly-std',
+    name: 'Weekly Plan',
+    price: 'Rp 10.000',
+    duration: '7 Days',
+    features: ['Group Bot Access', 'Basic Anti-Link', 'Standard Settings'],
+    type: 'standard',
+    priceValue: 10000
+  },
+  {
+    id: 'monthly-std',
+    name: 'Monthly Plan',
+    price: 'Rp 30.000',
+    duration: '30 Days',
+    features: ['All Weekly Features', 'Priority Support', 'Custom Welcome'],
+    type: 'standard',
+    priceValue: 30000
+  },
+  {
+    id: 'yearly-std',
+    name: 'Yearly Plan',
+    price: 'Rp 80.000',
+    duration: '365 Days',
+    features: ['Save 73%', 'Free Updates', 'Dedicated Support', 'Bonus Features'],
+    type: 'standard',
+    priceValue: 80000
+  },
 ];
 
-export const VIP_PLANS: PricingPlan[] = [
-  { id: 'vip-w', name: 'VIP Weekly', price: 'Rp 40.000', duration: '7 Days', features: ['Group-Wide Premium Access', 'All Members Auto-Premium', 'VIP Dedicated Node'], type: 'premium', priceValue: 40000 },
-  { id: 'vip-m', name: 'VIP Monthly', price: 'Rp 60.000', duration: '30 Days', features: ['Total Group Automation', 'No Buy 1/1 Needed', 'Direct Owner Line'], isPopular: true, type: 'premium', priceValue: 60000 },
-  { id: 'vip-y', name: 'VIP Yearly', price: 'Rp 110.000', duration: '1 Year', features: ['Ultimate Cluster Access', 'Bespoke Dev Modules', 'Elite Support'], type: 'premium', priceValue: 110000 },
+export const PREMIUM_PLANS: PricingPlan[] = [
+  {
+    id: 'weekly-prem',
+    name: 'Premium Weekly',
+    price: 'Rp 20.000',
+    duration: '7 Days',
+    features: ['Unlimited Requests', 'AI Advanced Access', 'Hard Anti-Spam', 'Custom Prefix'],
+    type: 'premium',
+    priceValue: 20000
+  },
+  {
+    id: 'monthly-prem',
+    name: 'Premium Monthly',
+    price: 'Rp 40.000',
+    duration: '30 Days',
+    features: ['All Premium Features', 'No Cooldown', 'Premium Commands', 'Custom Bot Name'],
+    isPopular: true,
+    type: 'premium',
+    priceValue: 40000
+  },
+  {
+    id: 'yearly-prem',
+    name: 'Premium Yearly',
+    price: 'Rp 90.000',
+    duration: '365 Days',
+    features: ['Lifetime Updates', 'VIP Support 24/7', 'Custom Development', 'Prioritized Server'],
+    type: 'premium',
+    priceValue: 90000
+  },
 ];
 
 export const SCRIPT_PLAN: PricingPlan = {
-  id: 'script-core',
-  name: 'Marceline Script Core',
+  id: 'script',
+  name: 'Source Code',
   price: 'Rp 80.000',
   duration: 'Lifetime',
-  features: [
-    'Full Source Code (Unencrypted)',
-    'Node.js ESM Architecture',
-    'Private API Integration',
-    'Self-Hosting Handbook',
-    'Developer Priority Support'
-  ],
+  features: ['Full Source Code', 'Documentation', 'Setup Tutorial', 'Free Updates (3 Months)', 'Installation Support'],
   type: 'script',
   priceValue: 80000
 };
 
 export const COMPARISON_DATA: ComparisonRow[] = [
-  { feature: 'Response Latency', sewa: '0.8s', premium: '0.12s' },
-  { feature: 'Encryption Layer', sewa: 'AES-128', premium: 'AES-256-GCM' },
-  { feature: 'Neural AI Core', sewa: false, premium: true },
-  { feature: 'Group-Wide Auth', sewa: false, premium: 'VIP Tier Only' },
-  { feature: 'Dedicated Node', sewa: false, premium: true },
-  { feature: 'Priority Support', sewa: 'Standard', premium: 'Elite' },
-  { feature: 'No Cooldown', sewa: false, premium: true },
-  { feature: 'Custom Bot Name', sewa: false, premium: true },
-];
-
-export const STATISTICS: Statistic[] = [
-  { label: 'Live Clusters', value: '14', icon: Command },
-  { label: 'Latency', value: '0.12s', icon: Activity },
-  { label: 'Sync Rate', value: '100%', icon: RefreshCw },
-  { label: 'Total Nodes', value: '512', icon: Users }
+  { feature: 'Group Management', sewa: true, premium: true },
+  { feature: 'Anti-Link System', sewa: 'Standard', premium: 'Advanced AI' },
+  { feature: 'Daily Request Limit', sewa: '100 Requests', premium: 'Unlimited' },
+  { feature: 'Premium Commands', sewa: false, premium: 'Full Access' },
+  { feature: 'AI Chat Capabilities', sewa: 'Basic', premium: 'GPT-4 Integration' },
+  { feature: 'Custom Commands', sewa: 'Limited', premium: 'Unlimited' },
+  { feature: 'Tech Support', sewa: 'Standard', premium: 'Priority 24/7' },
+  { feature: 'Cooldown Timer', sewa: '5 Seconds', premium: 'No Cooldown' },
 ];
 
 export const ADVANTAGES_DATA: Advantage[] = [
-  { icon: Zap, title: "Neural Marceline", description: "Engine tercepat untuk respon tanpa hambatan (<0.2s)." },
-  { icon: Shield, title: "Guardian Core", description: "Keamanan data tingkat militer dengan Anti-Ban v5." },
-  { icon: RefreshCw, title: "Pulse Update", description: "Pembaruan otomatis modul tanpa downtime server." },
-  { icon: Heart, title: "Human Context", description: "AI yang memahami emosi dan konteks obrolan Anda." }
-];
-
-export const TESTIMONIALS: Testimonial[] = [
-  { name: 'Kenshin', role: 'System Architect', comment: 'Marceline bukan sekadar bot, ini adalah puncak automasi WhatsApp.', avatar: 'K' },
-  { name: 'Rizky VIP', role: 'Community Lead', comment: 'Fitur VIP sangat membantu manajemen grup skala besar. Sangat efisien!', avatar: 'RV' }
+  { icon: Zap, title: 'Low Latency', description: 'Respon instan <1 detik dengan arsitektur server terdistribusi.' },
+  { icon: Lock, title: 'E2E Encryption', description: 'Keamanan data prioritas utama dengan standar enkripsi industri.' },
+  { icon: RefreshCw, title: 'Auto Updates', description: 'Sistem selalu diperbarui secara otomatis tanpa downtime.' },
+  { icon: Shield, title: 'Anti-Ban Tech', description: 'Algoritma cerdas untuk meminimalisir risiko blokir WhatsApp.' },
+  { icon: Smartphone, title: 'Multi-Device', description: 'Akses kontrol penuh dari Smartphone, Tablet, dan Desktop.' },
+  { icon: Command, title: 'Fully Customizable', description: 'Atur nama, foto profil, dan personality bot sesuai brand.' },
+  { icon: Activity, title: 'Deep Analytics', description: 'Insight mendalam tentang performa grup dan interaksi member.' },
+  { icon: Heart, title: 'Dedicated Support', description: 'Tim teknis profesional siap membantu kendala integrasi.' },
 ];
 
 export const FAQ_DATA: FaqItem[] = [
-  { question: 'Apa bedanya Premium dan VIP?', answer: 'Premium berlaku untuk 1 user, sementara VIP mengaktifkan fitur premium untuk SELURUH member di grup tersebut secara otomatis (Group-Wide Auth).' },
-  { question: 'Berapa harga Script Marceline?', answer: 'Script Core Marceline dihargai Rp 80.000 untuk lisensi seumur hidup dengan akses penuh kode sumber.' }
+  { question: 'Apa itu Bot WhatsApp Kenshin?', answer: 'Kenshin adalah asisten virtual WhatsApp berbasis AI yang membantu mengelola grup, menjawab pesan otomatis, dan menyediakan fitur hiburan serta utilitas canggih.' },
+  { question: 'Bagaimana cara kerja bot?', answer: 'Bot bekerja di cloud server 24/7. Setelah diundang ke grup dan dijadikan admin, bot akan otomatis memantau dan merespon sesuai perintah (command) atau trigger yang disetting.' },
+  { question: 'Apakah aman digunakan?', answer: 'Sangat aman. Bot hanya memproses pesan yang diperlukan dan tidak menyimpan data percakapan pribadi. Kami menggunakan protokol keamanan standar WhatsApp.' },
+  { question: 'Berapa lama proses aktivasi?', answer: 'Proses aktivasi instan (kurang dari 5 menit) setelah pembayaran terkonfirmasi via WhatsApp.' },
+  { question: 'Apakah bisa refund?', answer: 'Kami memberikan garansi uang kembali jika bot tidak dapat berfungsi sama sekali pada perangkat Anda dalam waktu 1x24 jam.' },
+  { question: 'Bagaimana cara perpanjang sewa?', answer: 'Anda akan mendapat notifikasi H-3 sebelum masa aktif habis. Cukup lakukan pembayaran ulang untuk paket yang diinginkan.' },
+  { question: 'Apakah script bot dijual?', answer: 'Ya, kami menjual source code full version bagi Anda yang ingin host sendiri atau belajar pengembangannya.' },
+  { question: 'Apakah ada limitasi untuk paket biasa?', answer: 'Ya, paket biasa memiliki limit request harian dan cooldown command untuk menjaga performa server tetap stabil.' },
 ];
 
-export const TECHNICAL_SPECS = [
-  "Marceline Engine v4.5", "Node.js 21.x LTS", "ESM Module Architecture", "AES-256-GCM Encryption", 
-  "PM2 Cluster Scaling", "WSS Encrypted Tunnel", "Redis 7.2 Cache", "NoSQL Database",
-  "Anti-Call Guardian", "Neural Interface v3", "Zero-Latency Buffer", "Load Balancer L7",
-  "Ghost Mode Stealth", "Custom AI Modules", "Auto-Restart Protocol", "Media Processor FFmpeg",
-  "Contextual Memory v4", "Private IP Rotation", "Cloud Backup Sync", "Rate Limiter Pro",
-  "Socket.io Integration", "Express.js API Gateway", "JWT Authentication", "Webhooks Enabled",
-  "Horizontal Scaling", "Memory Leak Guard", "Payload Optimizer", "Deep-Link OAuth",
-  "Secure Shell Isolation", "Event-Driven System", "Microservices Ready", "Heartbeat Monitor",
-  "Bespoke Scraper Core", "Anti-Spam Adaptive", "Broadcast Scalability", "Packet Filter v5",
-  "Dynamic DNS Support", "WAF Protection", "Intrusion Detection", "Log Aggregation",
-  "Atomic File Writes", "Stream Buffer Mgmt", "High-Avail Cluster", "Auto-Handshake v2",
-  "Module Hot Reload", "Dev Container Ready", "CI/CD Deployment", "Git-Hook Integration",
-  "Neural Token Optimizer", "Encrypted Key Storage", "Bespoke Middleware", "Elite Support API"
+export const TESTIMONIALS: Testimonial[] = [
+  { name: 'Aditya Pratama', role: 'Community Manager', comment: 'Bot ini sangat membantu moderasi grup komunitas game saya. Fitur anti-link nya sangat efektif.', avatar: 'AP' },
+  { name: 'Sarah Wijaya', role: 'Online Shop Owner', comment: 'Auto reply-nya bikin customer service jadi lebih efisien. Sangat recommended untuk automasi bisnis.', avatar: 'SW' },
+  { name: 'Budi Santoso', role: 'Edu Group Admin', comment: 'Fitur welcome message dan rules otomatis membuat grup belajar kami jadi lebih tertib dan profesional.', avatar: 'BS' },
+];
+
+export const STATISTICS: Statistic[] = [
+  { label: 'Total Users', value: '1,500+', icon: Users },
+  { label: 'Active Groups', value: '300+', icon: Globe },
+  { label: 'Uptime', value: '99.9%', icon: Activity },
+  { label: 'Latency', value: '0.4s', icon: Zap },
 ];

@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="https://lucide.dev/icons/bot.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MARCELINE | Elite WhatsApp Automation Infrastructure</title>
+    <title>Kenshin Bot | Premium WhatsApp Automation</title>
+    <meta name="description" content="Sewa Bot WhatsApp Kenshin. Solusi automasi grup terbaik dengan fitur anti-link, AI chat, dan manajemen grup otomatis." />
     
+    <!-- Fonts: Outfit (Professional Geometric) & Space Grotesk (Tech Headers) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -17,50 +20,54 @@
           extend: {
             fontFamily: {
               sans: ['Outfit', 'sans-serif'],
+              mono: ['monospace'],
               display: ['Space Grotesk', 'sans-serif'],
-              mono: ['Space Mono', 'monospace'],
             },
             colors: {
-              background: '#000000',
-              surface: '#050505',
-              border: '#111111',
-              accent: '#FFFFFF'
+              background: '#000000', // Pure Black
+              surface: '#0A0A0A',    // Off Black
+              accent: {
+                DEFAULT: '#FFFFFF', 
+                dim: '#A1A1AA', 
+              }
             },
-            letterSpacing: {
-              'tighter-extra': '-0.05em',
-              'widest-extra': '0.3em',
+            animation: {
+              'spin-slow': 'spin 8s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'pulse-glow': 'pulse-glow 3s infinite',
             },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              'pulse-glow': {
+                '0%, 100%': { opacity: 0.5, boxShadow: '0 0 10px rgba(59,130,246,0.2)' },
+                '50%': { opacity: 1, boxShadow: '0 0 25px rgba(59,130,246,0.5)' },
+              }
+            }
           }
         }
       }
     </script>
     <style>
-      body { background-color: #000000; color: #a1a1aa; cursor: default; }
-      ::selection { background-color: #ffffff; color: #000000; }
-      ::-webkit-scrollbar { width: 4px; }
-      ::-webkit-scrollbar-track { background: #000000; }
-      ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-      
-      .tech-grid { 
-        background-image: linear-gradient(to right, #0a0a0a 1px, transparent 1px), 
-                          linear-gradient(to bottom, #0a0a0a 1px, transparent 1px);
-        background-size: 60px 60px;
+      body {
+        background-color: #000000;
+        color: #e2e8f0;
       }
-      .scanline {
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
-        position: absolute;
-        animation: scan 4s linear infinite;
+      /* Custom scrollbar - Minimalist */
+      ::-webkit-scrollbar {
+        width: 4px;
       }
-      @keyframes scan {
-        0% { top: 0; opacity: 0; }
-        50% { opacity: 1; }
-        100% { top: 100%; opacity: 0; }
+      ::-webkit-scrollbar-track {
+        background: #000000;
       }
-      .blur-glow {
-        filter: blur(80px);
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 2px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
       }
     </style>
   <script type="importmap">
@@ -76,7 +83,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="tech-grid overflow-x-hidden">
+  <body>
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
