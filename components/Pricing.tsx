@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Check, ArrowRight, Code2, Zap, Terminal, ShieldAlert, Cpu, Globe, Users, Star } from 'lucide-react';
-import { STANDARD_PLANS, ADVANCED_PLANS, VIP_PLANS, SCRIPT_PLAN, CONTACT_INFO } from '../constants';
+import { motion } from 'framer-motion';
+import { Check, Zap, Crown, Code2, MessageCircle, ArrowRight } from 'lucide-react';
+import { PRICING_PLANS, PREMIUM_PLANS, SCRIPT_PLAN, CONTACT_INFO } from '../constants';
 import { PricingPlan } from '../types';
 import { generateWALink, getOrderMessage } from '../services/whatsapp';
 
 const Pricing: React.FC = () => {
-  const [tier, setTier] = useState<'standard' | 'premium' | 'vip'>('premium');
-
-  const plans = tier === 'standard' ? STANDARD_PLANS : tier === 'premium' ? ADVANCED_PLANS : VIP_PLANS;
+  const [activeTab, setActiveTab] = useState<'sewa' | 'premium'>('sewa');
 
   const handleManualBuy = (plan: PricingPlan) => {
      const msg = getOrderMessage(plan.name, plan.price, plan.type);
@@ -16,123 +14,177 @@ const Pricing: React.FC = () => {
      window.open(link, '_blank');
   };
 
-  return (
-    <section id="pricing" className="bg-black py-40 border-t border-zinc-900 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        <div className="text-center mb-32">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            className="text-7xl md:text-[10rem] font-bold text-white font-display tracking-tighter-extra mb-12"
-          >
-            ACCESS <span className="text-zinc-800 uppercase">Tiers</span>
-          </motion.h2>
-
-          <div className="inline-flex p-2.5 bg-zinc-950 border border-zinc-900 rounded-[3rem] shadow-3xl">
-            {(['standard', 'premium', 'vip'] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTier(t)}
-                className={`px-14 py-4 rounded-[2.5rem] text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${tier === t ? 'bg-white text-black shadow-2xl' : 'text-zinc-600 hover:text-white'}`}
-              >
-                {t}
-              </button>
-            ))}
+  const renderCard = (plan: PricingPlan, index: number) => {
+    const isPremium = plan.type === 'premium';
+    const isYearly = plan.duration.includes('365');
+    
+    return (
+      <motion.div
+        key={plan.id}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        whileHover={{ y: -10 }}
+        className={`relative p-8 rounded-[2rem] border flex flex-col h-full group transition-all ${
+          plan.isPopular
+            ? 'bg-zinc-900 border-zinc-600 shadow-2xl z-10'
+            : 'bg-black border-zinc-800 hover:border-zinc-600'
+        }`}
+      >
+        {plan.isPopular && (
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <span className="flex items-center gap-1 bg-white text-black text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+              <Crown className="w-3 h-3" /> Most Popular
+            </span>
           </div>
-          
-          {tier === 'vip' && (
-             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-8 text-zinc-500 text-sm font-mono tracking-widest uppercase flex items-center justify-center gap-3">
-                <Star className="w-4 h-4 text-yellow-500 fill-current" /> Auto-Premium for ALL Group Members <Star className="w-4 h-4 text-yellow-500 fill-current" />
-             </motion.p>
+        )}
+
+        <div className="mb-8 pt-4">
+          <h3 className={`text-xs font-bold mb-3 uppercase tracking-[0.2em] ${isPremium ? 'text-zinc-300' : 'text-zinc-500'}`}>
+            {plan.name}
+          </h3>
+          <div className="flex items-baseline gap-1">
+            <span className="text-4xl font-bold text-white font-display tracking-tight">{plan.price}</span>
+            <span className="text-zinc-600 text-sm font-mono">/{plan.duration}</span>
+          </div>
+          {isYearly && (
+             <div className="mt-3 inline-block px-3 py-1 bg-zinc-800 rounded-full text-[10px] font-bold text-white uppercase tracking-wider">
+                Save 73%
+             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14 items-stretch mb-40">
-          <AnimatePresence mode="wait">
-            {plans.map((plan, i) => (
-              <motion.div
-                key={`${tier}-${plan.id}`}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{ y: -15 }}
-                className={`relative p-12 rounded-[5rem] border flex flex-col h-full bg-zinc-950 border-zinc-900 hover:border-zinc-600 transition-all duration-700 group shadow-3xl overflow-hidden`}
-              >
-                {plan.isPopular && <div className="absolute top-0 right-10 bg-white text-black text-[9px] font-bold px-10 py-3 rounded-b-3xl uppercase tracking-widest shadow-2xl">Optimal Tier</div>}
-                
-                <div className="mb-14">
-                  <div className="flex items-center gap-3 mb-8">
-                      <Terminal className="w-4 h-4 text-zinc-800" />
-                      <span className="text-[11px] font-bold uppercase tracking-[0.4em] text-zinc-700 font-mono">{plan.name}</span>
-                  </div>
-                  <div className="flex items-baseline gap-4">
-                    <span className="text-7xl font-bold text-white tracking-tighter-extra font-display">{plan.price}</span>
-                    <span className="text-zinc-800 text-xs font-mono">/{plan.duration}</span>
-                  </div>
-                </div>
+        <ul className="space-y-4 mb-10 flex-1">
+          {plan.features.map((feature, idx) => (
+            <li key={idx} className="flex items-start gap-3">
+              <div className="mt-0.5 p-0.5 rounded-full shrink-0 bg-zinc-800">
+                <Check className="w-3 h-3 text-white" />
+              </div>
+              <span className="text-zinc-400 text-sm font-medium">{feature}</span>
+            </li>
+          ))}
+          {isYearly && (
+              <li className="flex items-start gap-3">
+              <div className="mt-0.5 p-0.5 rounded-full shrink-0 bg-zinc-700">
+                <Check className="w-3 h-3 text-white" />
+              </div>
+              <span className="text-white font-bold text-sm">Lifetime Feature Updates</span>
+            </li>
+          )}
+        </ul>
 
-                <div className="space-y-8 mb-16 flex-1">
-                  <div className="text-[10px] text-zinc-800 uppercase font-bold tracking-[0.3em] border-b border-zinc-900/50 pb-5 flex justify-between">
-                      <span>Neural Permissions</span>
-                      <span className="text-zinc-700">v4.5.1</span>
-                  </div>
-                  <ul className="space-y-6">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-6">
-                        <div className="w-1.5 h-1.5 bg-zinc-800 rounded-full mt-2 group-hover:bg-white transition-colors" />
-                        <span className="text-zinc-500 text-sm font-light leading-relaxed group-hover:text-zinc-300 transition-colors font-sans">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+        <button
+            onClick={() => handleManualBuy(plan)}
+            className={`w-full py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 uppercase text-xs tracking-widest ${
+            plan.isPopular
+                ? 'bg-white text-black hover:bg-zinc-200 shadow-lg'
+                : 'bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-800'
+            }`}
+        >
+            {isPremium ? <Zap className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
+            {isPremium ? 'Get Premium' : 'Order Now'}
+        </button>
+      </motion.div>
+    );
+  };
 
-                <button onClick={() => handleManualBuy(plan)} className="w-full py-8 bg-transparent border border-zinc-800 text-white rounded-[3rem] font-bold uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all flex items-center justify-center gap-5 group">
-                  Initialize Node <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+  return (
+    <div className="bg-black py-24 border-t border-zinc-900">
+    {/* Rent & Premium Section */}
+    <section id="pricing" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-32">
+      <div className="text-center mb-20">
+        <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold text-white font-display mb-8 tracking-tight"
+        >
+          Investment <span className="text-zinc-600">Plans</span>
+        </motion.h2>
+        
+        {/* Toggle Switch */}
+        <div className="inline-flex p-1.5 bg-zinc-900 rounded-full border border-zinc-800 relative">
+          <div className={`absolute top-1.5 bottom-1.5 w-[50%] bg-zinc-700 rounded-full transition-all duration-300 shadow-lg ${activeTab === 'premium' ? 'left-[49%]' : 'left-[1%]'}`}></div>
+          <button
+            onClick={() => setActiveTab('sewa')}
+            className={`relative z-10 px-10 py-3 rounded-full text-sm font-bold transition-all uppercase tracking-wide ${
+              activeTab === 'sewa' ? 'text-white' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Standard
+          </button>
+          <button
+            onClick={() => setActiveTab('premium')}
+            className={`relative z-10 px-10 py-3 rounded-full text-sm font-bold transition-all uppercase tracking-wide ${
+              activeTab === 'premium' ? 'text-white' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Premium VIP
+          </button>
         </div>
+      </div>
 
-        {/* MARCELINE SCRIPT CORE */}
-        <div id="script" className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-16 md:p-32 bg-white rounded-[6rem] relative overflow-hidden shadow-3xl">
-                <div className="absolute top-0 right-0 p-20 opacity-[0.05] rotate-12">
-                    <Cpu className="w-[35rem] h-[35rem] text-black" />
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-24 items-center relative z-10">
-                    <div>
-                        <div className="inline-flex items-center gap-4 px-8 py-4 bg-black text-white rounded-full mb-12 text-[10px] font-bold uppercase tracking-widest shadow-2xl">
-                            <ShieldAlert className="w-4 h-4" /> REPOSITORY_LICENSE_ACTIVE
-                        </div>
-                        <h2 className="text-6xl md:text-[8.5rem] font-bold text-black mb-10 font-display tracking-tighter-extra leading-[0.85]">MARCELINE<br />CORE_SRC</h2>
-                        <p className="text-zinc-500 text-xl font-light mb-16 leading-relaxed max-w-lg">
-                            Dapatkan akses tak terbatas ke seluruh arsitektur Marceline Assistant. Modular, cepat, dan siap untuk deployment mandiri selamanya.
-                        </p>
-                        <div className="flex flex-wrap gap-6">
-                            {['No_Encryption', 'Native_NodeJS', 'ESM_Module', 'Low_Memory'].map(tag => (
-                                <span key={tag} className="px-8 py-3 bg-zinc-100 rounded-3xl text-[11px] font-mono text-zinc-500 font-bold uppercase tracking-widest border border-zinc-200">{tag}</span>
-                            ))}
-                        </div>
-                    </div>
-                    
-                    <div className="bg-black p-16 md:p-24 rounded-[5rem] text-center shadow-3xl flex flex-col items-center">
-                        <span className="text-[10px] text-zinc-800 uppercase tracking-[0.5em] block mb-14 font-mono">Infrastructure Acquisition</span>
-                        <div className="text-8xl lg:text-[11rem] font-bold text-white font-display tracking-tighter-extra mb-20">{SCRIPT_PLAN.price}</div>
-                        <button onClick={() => handleManualBuy(SCRIPT_PLAN)} className="w-full py-9 bg-white text-black rounded-[3rem] font-bold uppercase text-[11px] tracking-[0.5em] hover:bg-zinc-200 transition-all flex items-center justify-center gap-8 shadow-2xl">
-                            ACQUIRE CORE <Globe className="w-6 h-6" />
-                        </button>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        {activeTab === 'sewa' 
+          ? PRICING_PLANS.map((plan, i) => renderCard(plan, i))
+          : PREMIUM_PLANS.map((plan, i) => renderCard(plan, i))
+        }
       </div>
     </section>
+
+    {/* Script Sale Section */}
+    <section id="script" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-zinc-900 rounded-[3rem] p-8 md:p-16 border border-zinc-800 relative overflow-hidden group hover:border-zinc-600 transition-all"
+        >
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -z-10"></div>
+            
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black border border-zinc-700 text-white text-xs font-bold mb-8 uppercase tracking-widest">
+                        <Code2 className="w-4 h-4" />
+                        <span>Developers Edition</span>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-display">Source Code Ownership</h2>
+                    <p className="text-zinc-400 mb-10 leading-relaxed text-lg font-light">
+                        Miliki kontrol penuh atas infrastruktur Anda. 
+                        Termasuk modul lengkap, dokumentasi API, dan <strong>Update Fitur Selamanya</strong> secara gratis.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 mb-8">
+                        {SCRIPT_PLAN.features.map((feat, i) => (
+                            <span key={i} className="flex items-center gap-3 text-sm text-zinc-300 font-medium">
+                                <div className="p-1 bg-zinc-800 rounded-full">
+                                    <Check className="w-3 h-3 text-white" />
+                                </div>
+                                {feat}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+                
+                <div className="bg-black p-10 rounded-[2.5rem] border border-zinc-800 flex flex-col items-center text-center relative shadow-2xl">
+                    <p className="text-zinc-500 text-xs mb-3 font-bold uppercase tracking-widest">One-Time License</p>
+                    <div className="mb-8">
+                        <span className="text-6xl font-bold text-white tracking-tighter font-display">{SCRIPT_PLAN.price}</span>
+                        <span className="text-cyan-400 text-xs font-bold block mt-3 tracking-[0.2em] uppercase">Lifetime Access</span>
+                    </div>
+                    
+                    <button 
+                         onClick={() => handleManualBuy(SCRIPT_PLAN)}
+                        className="w-full py-5 bg-white hover:bg-zinc-200 text-black rounded-2xl font-bold transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)] flex items-center justify-center gap-3 uppercase tracking-wide text-sm"
+                    >
+                        <MessageCircle className="w-5 h-5" /> Buy Source Code
+                    </button>
+                    <p className="mt-4 text-xs text-zinc-600">Secure payment via WhatsApp</p>
+                </div>
+            </div>
+        </motion.div>
+    </section>
+    </div>
   );
 };
 
