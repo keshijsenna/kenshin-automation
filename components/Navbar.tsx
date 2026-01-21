@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,37 +14,41 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Fitur', href: '#features' },
-    { name: 'Harga', href: '#pricing' },
-    { name: 'Premium', href: '#premium' },
-    { name: 'Script', href: '#script' },
-    { name: 'Panduan', href: '#guide' },
+    { name: 'Specifications', href: '#features' },
+    { name: 'Licensing', href: '#pricing' },
+    { name: 'Depository', href: '#script' },
+    { name: 'Documentation', href: '#guide' },
   ];
 
   return (
     <nav
-      className={`fixed w-full z-40 transition-all duration-300 ${
-        scrolled ? 'bg-black/80 backdrop-blur-md border-b border-zinc-800 py-3' : 'bg-transparent py-5'
+      className={`fixed w-full z-40 transition-all duration-500 ${
+        scrolled ? 'bg-black/90 backdrop-blur-xl border-b border-zinc-900 py-4' : 'bg-transparent py-8'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-zinc-900 rounded-lg border border-zinc-800">
-              <Bot className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-4 group cursor-default">
+            <div className="p-2.5 bg-white rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform">
+              <Bot className="w-6 h-6 text-black" />
             </div>
-            <span className="text-xl font-bold text-white tracking-wide font-['Space_Grotesk']">
-              KENSHIN
-            </span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-white tracking-tighter font-display leading-none">
+                MARCELINE
+              </span>
+              <span className="text-[9px] text-zinc-600 font-mono tracking-widest uppercase mt-1">
+                Assistant_v4
+              </span>
+            </div>
           </div>
 
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="flex items-center space-x-12">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-zinc-400 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  className="text-zinc-500 hover:text-white text-[10px] font-bold uppercase tracking-widest transition-all hover:tracking-[0.2em]"
                 >
                   {link.name}
                 </a>
@@ -54,16 +59,16 @@ const Navbar: React.FC = () => {
           <div className="hidden md:block">
             <a
                href="#pricing"
-               className="bg-white hover:bg-zinc-200 text-black px-6 py-2 rounded-full text-sm font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+               className="bg-white hover:bg-zinc-200 text-black px-10 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all shadow-xl active:scale-95"
             >
-              Sewa Sekarang
+              Initialize Node
             </a>
           </div>
 
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-zinc-300 hover:text-white p-2"
+              className="text-zinc-400 hover:text-white p-2"
             >
               {isOpen ? <X /> : <Menu />}
             </button>
@@ -77,19 +82,25 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black border-b border-zinc-800 overflow-hidden"
+            className="md:hidden bg-zinc-950 border-b border-zinc-900 overflow-hidden"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="px-6 pt-6 pb-12 space-y-6">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-zinc-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  className="text-zinc-400 hover:text-white block text-xs font-bold uppercase tracking-widest"
                 >
                   {link.name}
                 </a>
               ))}
+              <a
+                href="#pricing"
+                className="w-full bg-white text-black text-center block py-4 rounded-2xl text-xs font-bold uppercase tracking-widest"
+              >
+                Initialize Node
+              </a>
             </div>
           </motion.div>
         )}

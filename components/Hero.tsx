@@ -1,244 +1,229 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, MessageCircle, Zap, Shield, Globe, Cpu, Wifi, Clock as ClockIcon, Activity } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Terminal, Wifi, Users, Activity, Shield, Cpu, Zap } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
 
+const RobotEntity: React.FC = () => {
+  return (
+    <motion.div
+      animate={{ 
+        y: [-15, 15, -15], 
+        rotateY: [-5, 5, -5],
+        rotateX: [-3, 3, -3]
+      }}
+      transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      className="relative z-20 group"
+    >
+      {/* DETAILED ROBOT HEAD ASSEMBLY */}
+      <div className="relative w-80 h-96 bg-zinc-950 rounded-[6rem] shadow-[0_60px_150px_-20px_rgba(0,0,0,0.95)] flex flex-col items-center border border-white/5">
+        
+        {/* Ceramic Top Shell */}
+        <div className="absolute top-1.5 left-1.5 right-1.5 h-[48%] bg-white rounded-[5.5rem] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-white via-zinc-50 to-zinc-200"></div>
+          {/* Detailed Panel Lines */}
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-zinc-200/50"></div>
+          <div className="absolute top-0 left-1/2 w-[1px] h-full bg-zinc-200/50"></div>
+          <div className="absolute top-8 left-1/4 w-32 h-1 bg-white rounded-full opacity-40 blur-sm"></div>
+        </div>
+
+        {/* OBSIDIAN VISOR WITH NEURAL BLINK */}
+        <div className="mt-28 relative z-10 w-64 h-32 bg-black rounded-[2.5rem] border border-zinc-800/50 overflow-hidden flex flex-col items-center justify-center shadow-inner">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.03),_transparent)]"></div>
+          <div className="scanline"></div>
+          
+          <div className="flex gap-14 relative z-10">
+            {/* Blinking Neural Eyes */}
+            {[0, 1].map((i) => (
+              <motion.div 
+                key={i}
+                animate={{ 
+                  scaleY: [1, 1, 0.05, 1, 1],
+                  boxShadow: [
+                    "0 0 20px rgba(255,255,255,0.5)",
+                    "0 0 40px rgba(255,255,255,0.8)",
+                    "0 0 5px rgba(255,255,255,0.2)",
+                    "0 0 20px rgba(255,255,255,0.5)"
+                  ]
+                }} 
+                transition={{ 
+                  duration: 5, 
+                  repeat: Infinity, 
+                  repeatDelay: 1 + Math.random() * 2,
+                  times: [0, 0.9, 0.93, 0.96, 1] 
+                }} 
+                className="w-16 h-2 bg-white rounded-full" 
+              />
+            ))}
+          </div>
+          <div className="absolute bottom-3 font-mono text-[7px] text-zinc-800 uppercase tracking-widest animate-pulse">Neural_Sync_Active</div>
+        </div>
+
+        {/* Internal Mechanical Details */}
+        <div className="mt-14 flex flex-col items-center gap-4">
+           <div className="w-24 h-2 bg-zinc-900 rounded-full border border-white/5"></div>
+           <div className="w-32 h-1 bg-zinc-900 rounded-full opacity-50"></div>
+           {/* Internal Status LEDs */}
+           <div className="flex gap-4 mt-4">
+              <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2, repeat: Infinity }} className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_blue]"></motion.div>
+              <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} className="w-1.5 h-1.5 rounded-full bg-zinc-700"></motion.div>
+              <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }} className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_8px_white]"></motion.div>
+           </div>
+        </div>
+
+        {/* Floating Side Fins */}
+        <motion.div 
+          animate={{ x: [-10, 0, -10] }} 
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute -left-14 top-1/4 w-12 h-44 bg-white rounded-[2rem] border border-zinc-100 shadow-2xl flex flex-col justify-around py-8 items-center"
+        >
+          <div className="w-2 h-2 bg-black rounded-full opacity-20"></div>
+          <div className="w-1.5 h-16 bg-zinc-200 rounded-full"></div>
+          <div className="w-2 h-2 bg-black rounded-full opacity-20"></div>
+        </motion.div>
+
+        <motion.div 
+          animate={{ x: [10, 0, 10] }} 
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute -right-14 top-1/4 w-12 h-44 bg-white rounded-[2rem] border border-zinc-100 shadow-2xl flex flex-col justify-around py-8 items-center"
+        >
+          <div className="w-2 h-2 bg-black rounded-full opacity-20"></div>
+          <div className="w-1.5 h-16 bg-zinc-200 rounded-full"></div>
+          <div className="w-2 h-2 bg-black rounded-full opacity-20"></div>
+        </motion.div>
+      </div>
+
+      {/* Orbiting Data Shards */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          animate={{ 
+            y: [0, -60, 0], 
+            opacity: [0, 0.6, 0],
+            scale: [0.8, 1, 0.8]
+          }}
+          transition={{ duration: 4 + i, repeat: Infinity }}
+          className="absolute font-mono text-[9px] text-zinc-500 p-2.5 border border-white/10 rounded-lg bg-zinc-950/80 backdrop-blur-md"
+          style={{ 
+            top: `${18 * i}%`, 
+            left: i % 2 === 0 ? '-100px' : '320px',
+            zIndex: 30
+          }}
+        >
+          {i % 2 === 0 ? "0x" + Math.random().toString(16).slice(2, 6).toUpperCase() : "SYNCING"}
+        </motion.div>
+      ))}
+
+      {/* Neural Circles */}
+      <div className="absolute inset-[-100px] border border-white/5 rounded-full -z-10 animate-[spin_40s_linear_infinite]" />
+      <div className="absolute inset-[-160px] border border-dashed border-zinc-900 rounded-full -z-10 animate-[spin_60s_linear_infinite_reverse]" />
+    </motion.div>
+  );
+};
+
 const Hero: React.FC = () => {
-  const [visitors, setVisitors] = useState(1240);
-  const [time, setTime] = useState(new Date());
+  const [visitors, setVisitors] = useState(12840);
+  const [logs, setLogs] = useState<string[]>([]);
+  const { scrollY } = useScroll();
+  const yRange = useTransform(scrollY, [0, 500], [0, -100]);
 
   useEffect(() => {
-    // Live visitor simulation
-    const visitorInterval = setInterval(() => {
-        setVisitors(prev => prev + (Math.random() > 0.5 ? 1 : -1));
-    }, 3000);
-
-    // Real-time clock
-    const timeInterval = setInterval(() => {
-        setTime(new Date());
-    }, 1000);
-
-    return () => {
-        clearInterval(visitorInterval);
-        clearInterval(timeInterval);
-    };
+    const timer = setInterval(() => {
+      setVisitors(v => v + Math.floor(Math.random() * 2));
+      const msgs = ["[AUTH] SESSION_SYNC", "[SYS] BUFFER_CLEARED", "[NET] PACKET_FILTER_ON", "[BOT] NEURAL_HANDSHAKE", "[SEC] GCM_AUTH_OK"];
+      setLogs(prev => [msgs[Math.floor(Math.random() * msgs.length)], ...prev].slice(0, 4));
+    }, 2500);
+    return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit' 
-    });
-  };
-
   return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-black min-h-screen flex items-center">
+    <section className="relative min-h-screen pt-32 pb-20 flex items-center bg-black overflow-hidden">
+      <div className="absolute inset-0 blur-glow opacity-30 pointer-events-none" />
       
-      {/* Elegant Background - Minimalist */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,1))] z-0"></div>
-      <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-zinc-900/20 to-transparent blur-[100px] -z-10" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          
-          {/* LEFT: Text Content */}
+      {/* Background Matrix/Hacker Stream */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 overflow-hidden font-mono text-[10px] text-white">
+        {[...Array(20)].map((_, i) => (
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            key={i}
+            initial={{ y: -100, x: Math.random() * 2000 }}
+            animate={{ y: 1200 }}
+            transition={{ duration: 15 + Math.random() * 15, repeat: Infinity, ease: "linear" }}
+            className="absolute"
           >
-            {/* Tech HUD Badges - Elegant Minimalist */}
-            <div className="flex flex-wrap items-center gap-6 mb-10">
-               {/* Visitor HUD */}
-               <div className="flex items-center gap-3 group cursor-default">
-                   <div className="relative">
-                       <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-20 animate-ping"></span>
-                       <div className="relative w-2 h-2 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e]"></div>
-                   </div>
-                   <div className="h-8 w-px bg-zinc-800 rotate-12 mx-1"></div>
-                   <div className="flex flex-col">
-                       <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">Status</span>
-                       <span className="text-xs font-mono text-zinc-300 flex items-center gap-2">
-                          <span className="font-bold">{visitors.toLocaleString()}</span> ONLINE
-                       </span>
-                   </div>
-               </div>
+            {Math.random().toString(16).slice(2, 20).toUpperCase()}
+          </motion.div>
+        ))}
+      </div>
 
-               {/* Clock HUD */}
-               <div className="flex items-center gap-3 group cursor-default">
-                   <ClockIcon className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors" />
-                   <div className="h-8 w-px bg-zinc-800 rotate-12 mx-1"></div>
-                   <div className="flex flex-col">
-                       <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">System Time</span>
-                       <span className="text-xs font-mono text-zinc-300">
-                          {formatTime(time)} <span className="text-zinc-600">UTC+7</span>
-                       </span>
-                   </div>
-               </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <div className="flex items-center gap-6 mb-12">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+                <Terminal className="w-3 h-3" />
+                <span>MARCELINE_OS_4.5</span>
+              </div>
+              <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-zinc-950/50 border border-zinc-900 backdrop-blur-xl">
+                 <Users className="w-3.5 h-3.5 text-zinc-500" />
+                 <span className="text-[10px] font-mono font-bold text-white uppercase tracking-tighter">
+                   {visitors.toLocaleString()} Activations
+                 </span>
+                 <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+              </div>
             </div>
-            
-            <h1 className="text-5xl md:text-8xl font-bold text-white leading-[1.0] font-display tracking-tight mb-8">
-              FUTURE <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-zinc-400 to-zinc-600">
-                AUTOMATION
-              </span>
+
+            <h1 className="text-7xl md:text-9xl font-bold text-white leading-[0.8] font-display tracking-tighter-extra mb-8 group select-none">
+              MARCELINE<br />
+              <span className="text-zinc-800 group-hover:text-zinc-500 transition-colors duration-1000">INTERFACE</span>
             </h1>
             
-            <p className="text-lg text-zinc-400 max-w-lg leading-relaxed mb-12 font-light border-l border-zinc-800 pl-6">
-              Kenshin Bot menghadirkan efisiensi tanpa batas. 
-              Desain minimalis, performa maksimal, dan keamanan tingkat tinggi untuk komunitas eksklusif Anda.
+            <p className="text-lg md:text-xl text-zinc-400 max-w-lg leading-relaxed mb-12 font-light border-l-2 border-zinc-800 pl-8">
+              Developed by <span className="text-white font-semibold">Kenshin</span>. Infrastruktur asisten virtual tercanggih dengan akselerasi neural dan keamanan absolut.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-5">
-              <a
-                href="#pricing"
-                className="group relative px-8 py-4 bg-white text-black font-bold rounded-none skew-x-[-10deg] hover:bg-zinc-200 transition-all overflow-hidden border border-white"
-              >
-                <div className="skew-x-[10deg] flex items-center gap-3">
-                    DEPLOY NOW <ArrowRight className="w-5 h-5" />
-                </div>
+            <div className="flex flex-col sm:flex-row gap-6 mb-16">
+              <a href="#pricing" className="px-12 py-5 bg-white text-black font-bold uppercase tracking-widest-extra text-[10px] hover:bg-zinc-200 transition-all flex items-center justify-center gap-4 shadow-2xl">
+                BOOT NODE <ArrowRight className="w-4 h-4" />
               </a>
-              <a
-                href={CONTACT_INFO.channelLink}
-                target="_blank"
-                rel="noreferrer"
-                className="group relative px-8 py-4 bg-transparent text-white font-bold rounded-none skew-x-[-10deg] border border-zinc-700 hover:border-white transition-all overflow-hidden"
-              >
-                 <div className="skew-x-[10deg] flex items-center gap-3">
-                    <MessageCircle className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" /> 
-                    JOIN CHANNEL
-                 </div>
+              <a href={CONTACT_INFO.channelLink} className="px-12 py-5 bg-transparent border border-zinc-800 text-white font-bold uppercase tracking-widest-extra text-[10px] hover:border-white transition-all flex items-center justify-center">
+                INTERNAL_DATA
               </a>
             </div>
 
-            {/* Bottom Stats - Ultra Clean */}
-            <div className="mt-20 flex gap-12 pt-8 border-t border-zinc-900">
-                <div>
-                    <div className="text-2xl font-bold text-white font-display">0.1s</div>
-                    <div className="text-xs text-zinc-600 uppercase tracking-widest mt-1">Latency</div>
+            {/* LIVE SYSTEM LOG HUD */}
+            <motion.div 
+              style={{ y: yRange }}
+              className="p-8 bg-zinc-950/60 border border-zinc-900 rounded-[2.5rem] backdrop-blur-3xl font-mono text-[9px] text-zinc-600 uppercase tracking-widest relative overflow-hidden shadow-2xl"
+            >
+                <div className="flex flex-col gap-2.5">
+                    {logs.map((log, i) => (
+                        <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} key={i} className="flex gap-4">
+                            <span className="text-zinc-800">[{new Date().toLocaleTimeString('en-GB')}]</span>
+                            <span className={log.includes('SYNC') || log.includes('OK') ? 'text-zinc-300' : 'text-zinc-700'}>{log}</span>
+                        </motion.div>
+                    ))}
+                    <div className="mt-6 pt-6 border-t border-zinc-900 flex justify-between items-center text-[10px]">
+                        <div className="flex gap-8">
+                            <span className="flex items-center gap-2"><Activity className="w-3.5 h-3.5" /> LOAD: 4.8%</span>
+                            <span className="flex items-center gap-2"><Shield className="w-3.5 h-3.5" /> GCM_AUTH_OK</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse shadow-[0_0_10px_white]"></div>
+                           <span className="text-white font-bold">NODE_ALPHA_READY</span>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <div className="text-2xl font-bold text-white font-display">100%</div>
-                    <div className="text-xs text-zinc-600 uppercase tracking-widest mt-1">Uptime</div>
-                </div>
-                <div>
-                    <div className="text-2xl font-bold text-white font-display">256<span className="text-sm align-top">bit</span></div>
-                    <div className="text-xs text-zinc-600 uppercase tracking-widest mt-1">Encrypted</div>
-                </div>
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* RIGHT: Floating Robot - NO BORDER, PURE FLOATING AESTHETIC */}
-          <div className="relative flex justify-center items-center h-[600px] perspective-[1000px]">
-             
-             <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1.5, ease: "circOut" }}
-                className="relative z-20"
-             >
-                 {/* Infinite Float Animation */}
-                 <motion.div
-                    animate={{ y: [-30, 30, -30], rotate: [0, 2, -2, 0] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                    className="relative flex flex-col items-center"
-                 >
-                     {/* 1. THE HEAD - Sleek Black Glass Capsule */}
-                     <div className="relative w-64 h-72 bg-gradient-to-br from-zinc-800 to-black rounded-[3rem] border-t border-l border-zinc-700/50 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center overflow-visible z-20">
-                        
-                        {/* Glossy Highlights */}
-                        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-tr from-transparent to-white/5 rounded-[3rem] pointer-events-none"></div>
-
-                        {/* Visor Area */}
-                        <div className="mt-20 w-48 h-24 bg-black rounded-2xl border border-zinc-800 relative overflow-hidden flex items-center justify-center">
-                             {/* Scanning Line */}
-                             <motion.div 
-                                className="absolute top-0 bottom-0 w-[2px] bg-cyan-500 opacity-50 blur-[2px]"
-                                animate={{ left: ['0%', '100%', '0%'] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                             />
-                             
-                             {/* Eyes */}
-                             <div className="flex gap-8 z-10">
-                                 <motion.div 
-                                    className="w-10 h-2 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)]"
-                                    animate={{ opacity: [0.5, 1, 0.5], scaleX: [0.9, 1, 0.9] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                 />
-                                 <motion.div 
-                                    className="w-10 h-2 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)]"
-                                    animate={{ opacity: [0.5, 1, 0.5], scaleX: [0.9, 1, 0.9] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                 />
-                             </div>
-                        </div>
-
-                        {/* Audio Visualizer Mouth */}
-                        <div className="mt-8 flex gap-1.5 items-end h-6">
-                            {[1,2,3,4,5].map((i) => (
-                                <motion.div
-                                    key={i}
-                                    className="w-1.5 bg-zinc-600 rounded-full"
-                                    animate={{ height: [4, 16, 4] }}
-                                    transition={{ duration: 0.5 + Math.random(), repeat: Infinity }}
-                                />
-                            ))}
-                        </div>
-
-                        {/* Detached Ears (Floating) */}
-                        <motion.div 
-                            className="absolute -left-6 top-20 w-4 h-24 bg-gradient-to-b from-zinc-800 to-black rounded-l-xl border-l border-zinc-700"
-                            animate={{ x: [0, -5, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                        />
-                         <motion.div 
-                            className="absolute -right-6 top-20 w-4 h-24 bg-gradient-to-b from-zinc-800 to-black rounded-r-xl border-r border-zinc-700"
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                        />
-                     </div>
-
-                     {/* 2. NECK CONNECTOR */}
-                     <div className="w-20 h-10 bg-zinc-900 border-x border-zinc-800 -mt-4 z-10 flex flex-col justify-center gap-1 items-center">
-                        <div className="w-16 h-1 bg-zinc-800 rounded-full"></div>
-                        <div className="w-16 h-1 bg-zinc-800 rounded-full"></div>
-                     </div>
-
-                     {/* 3. SHOULDER/BODY BASE - Abstract */}
-                     <div className="w-48 h-16 bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 rounded-t-[4rem] border-t border-zinc-700 shadow-2xl z-10"></div>
-
-                     {/* 4. HOLOGRAPHIC RINGS (Subtle, elegant) */}
-                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-zinc-700 to-transparent opacity-30"></div>
-                     <motion.div 
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] border border-zinc-800/50 rounded-full"
-                        animate={{ rotateX: [60, 70, 60], rotateZ: 360 }}
-                        transition={{ rotateX: { duration: 5, repeat: Infinity, ease: "easeInOut" }, rotateZ: { duration: 30, repeat: Infinity, ease: "linear" } }}
-                     >
-                        <div className="absolute top-0 left-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_10px_white]"></div>
-                     </motion.div>
-
-                 </motion.div>
-
-                 {/* Floating Data Chips */}
-                 <motion.div 
-                    className="absolute top-20 right-0 bg-black/80 backdrop-blur border border-zinc-800 p-3 rounded-lg shadow-xl"
-                    animate={{ y: [0, 20, 0] }}
-                    transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-                 >
-                     <Wifi className="w-5 h-5 text-zinc-500" />
-                 </motion.div>
-                 
-                 <motion.div 
-                    className="absolute bottom-40 left-0 bg-black/80 backdrop-blur border border-zinc-800 p-3 rounded-lg shadow-xl"
-                    animate={{ y: [0, -20, 0] }}
-                    transition={{ duration: 6, repeat: Infinity, delay: 0.5 }}
-                 >
-                     <Cpu className="w-5 h-5 text-zinc-500" />
-                 </motion.div>
-
-             </motion.div>
+          {/* DETAILED ROBOT CONTAINER */}
+          <div className="relative flex justify-center items-center h-[500px] lg:h-[700px]">
+            <RobotEntity />
+            <div className="absolute bottom-10 w-80 h-12 bg-zinc-800 blur-[120px] rounded-full opacity-40"></div>
           </div>
         </div>
       </div>
